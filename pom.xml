@@ -20,9 +20,9 @@
     -->
     <springBoot.version>2.5.4</springBoot.version>
 
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <version.java>1.8</version.java>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <version.java>17</version.java>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -37,6 +37,7 @@
         <scope>import</scope>
         <type>pom</type>
       </dependency>
+
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
@@ -56,6 +57,12 @@
       <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
       Make sure you also use an EE version of Camunda - see above
       -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
     </dependency>
 
     <dependency>

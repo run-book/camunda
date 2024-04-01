@@ -35,3 +35,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/camunda-db.mv.db
+/camunda-db.trace.db
