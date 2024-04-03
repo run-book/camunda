@@ -12,9 +12,9 @@
     <bpmn:endEvent id="EndEvent" name="Request&#10;processed">
       <bpmn:incoming>Flow_18tgjao</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_01pcqyg" sourceRef="ServiceTask_Logger" targetRef="AML" />
-    <bpmn:sequenceFlow id="Flow_18tgjao" sourceRef="AML" targetRef="EndEvent" />
-    <bpmn:serviceTask id="AML" name="AML" camunda:type="external" camunda:topic="AML">
+    <bpmn:sequenceFlow id="Flow_01pcqyg" sourceRef="ServiceTask_Logger" targetRef="aml" />
+    <bpmn:sequenceFlow id="Flow_18tgjao" sourceRef="aml" targetRef="EndEvent" />
+    <bpmn:serviceTask id="aml" name="AML" camunda:type="external" camunda:topic="AML">
       <bpmn:incoming>Flow_01pcqyg</bpmn:incoming>
       <bpmn:outgoing>Flow_18tgjao</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -36,7 +36,7 @@
           <dc:Bounds x="865" y="138" width="51" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1yuxzwd_di" bpmnElement="AML">
+      <bpmndi:BPMNShape id="Activity_1yuxzwd_di" bpmnElement="aml">
         <dc:Bounds x="570" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_08va5r8_di" bpmnElement="SequenceFlow1">

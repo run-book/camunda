@@ -13,9 +13,11 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @Component
 public class ExternalTaskWorker {
+    private final Logger LOGGER = Logger.getLogger(ExternalTaskWorker.class.getName());
     private final ExternalTaskService externalTaskService;
     private final TopicList topics;
     private final ProcessTasksClient processTasksClient;
@@ -27,27 +29,30 @@ public class ExternalTaskWorker {
         this.processTasksClient = processTasksClient;
         this.configRepo = configRepo;
     }
-    @Scheduled(fixedDelay = 5000) // Poll every 10 seconds
+    @Scheduled(fixedDelay = 5000)
     public void workOnAmlTasks() {
-        System.out.println("Polling for  tasks...");
+        System.out.println("Polling for  tasks..." + topics.topics);
         for (String taskName : topics.topics) {
             workOnOneTaskName(taskName);
         }
     }
     public void workOnOneTaskName(String taskName) { //This should be much more paralle and better configured. Easy to do. This is POC though...
-        System.out.println("   " + taskName);
         String workerId = "ExternalTaskWorker";
         List<LockedExternalTask> tasks = externalTaskService.fetchAndLock(10, workerId)
                 .topic(taskName, 60_000L) // Lock for 60 seconds
                 .execute();
+        LOGGER.info("   " + taskName + ": " + tasks.size());
         for (LockedExternalTask camundaTask : tasks) {
+            String taskId = camundaTask.getId();
             try {
+                LOGGER.info("Camunda task id" + taskId);
                 String configName = camundaTask.getVariables().getValue("config", String.class);
                 Config config = configRepo.readFromName(configName).result().config(); // remember will usually be using sha
                 String activityId = camundaTask.getActivityId();
-                Config.Task task = config.tasks().get(taskName);
+                Config.Task task = config.tasks().get(activityId);
+                LOGGER.info("   processing " + taskName + " for " + configName + " and activityId " + activityId + " with task " + task);
                 if (task == null) {
-                    externalTaskService.handleFailure(camundaTask.getId(), workerId, "No task found for " + taskName, 0, 60_000L);
+                    externalTaskService.handleFailure(taskId, workerId, "No task found for " + taskName, 0, 60_000L);
                     continue;
                 }
                 Map<String, Object> variables = new HashMap<>();
@@ -58,27 +63,24 @@ public class ExternalTaskWorker {
                         camundaTask.getProcessInstanceId(),
                         activityId,
                         workerId,
+                        taskId,
                         configName,
                         variables);
-                System.out.println("             " + request);
+                LOGGER.info("             " + request);
                 processTasksClient.apply(request).thenAccept(response -> {
-                    System.out.println(MessageFormat.format("             Processing task {0} for process instance {1} with config {2}", camundaTask.getActivityId(), camundaTask.getProcessInstanceId(), configName));
-                    externalTaskService.complete(camundaTask.getId(), workerId);
+                    LOGGER.info(MessageFormat.format("             External service is processing task {0} for process instance {1} with config {2}", camundaTask.getActivityId(), camundaTask.getProcessInstanceId(), configName));
+
                 }).exceptionally(
                         throwable -> {
-                            System.out.println("             Failed to process " + request);
-                            externalTaskService.handleFailure(camundaTask.getId(), workerId, throwable.getMessage(), 0, 60_000L);
+                            System.out.println("             Failed to process " + request + " because " + throwable.getMessage());
+                            LOGGER.throwing(ExternalTaskWorker.class.getName(), "workOnOneTaskName", throwable );
+                            externalTaskService.handleFailure(taskId, workerId, throwable.getMessage(), 0, 60_000L);
                             return null;
                         }
                 );
             } catch (Exception e) {
-                externalTaskService.handleFailure(camundaTask.getId(), workerId, e.getMessage(), 0, 60_000L);
+                externalTaskService.handleFailure(taskId, workerId, e.getMessage(), 0, 60_000L);
             }
         }
-    }
-    private boolean callExternalAmlService(String processInstanceId) {
-        // Placeholder: implement the call to the actual external AML check service
-        // This function should return the result of the AML check
-        return true; // Simplified result
     }
 }

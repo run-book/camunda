@@ -15,8 +15,15 @@ camunda.bpm:
 #  default-serialization-format: application/json
 server.port: 8080
 
+logging:
+  level:
+    org.springframework.web.reactive.function.client: DEBUG
+    org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
+
+
 fusion:
   api:
     url: http://localhost:1235
+    serviceEndpoint: service
   callback:
-    url: http://localhost:8080/taskFinished?processId={processId}&workerId={workerId}
+    url: http://localhost:8080/complete/<<taskId>>/<<workerId>>
