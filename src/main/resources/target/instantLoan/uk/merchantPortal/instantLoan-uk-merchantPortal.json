@@ -12,6 +12,9 @@
     "aml": {
       "taskDescription": "AML check for customer",
       "service": "experian_aml",
+      "variables": [
+        "userdata"
+      ],
       "serviceDescription": "AML service provided by Experian for real-time background checks.",
       "request": {
         "topic": "experian.aml.request",
@@ -47,6 +50,9 @@
     "creditCheck": {
       "service": "equifax_creditCheck",
       "taskDescription": "Credit check for customer. In the UK we use Equifax",
+      "variables": [
+        "userdata"
+      ],
       "serviceDescription": "Credit score checking service provided by Equifax.",
       "request": {
         "topic": "equifax.creditScore.request",
@@ -82,6 +88,9 @@
     "pricing": {
       "taskDescription": "Pricing service for product and service pricing adjustments",
       "service": "internal_pricingService",
+      "variables": [
+        "userdata"
+      ],
       "serviceDescription": "Internal pricing service for product and service pricing adjustments.",
       "request": {
         "topic": "internal.pricing.request",
@@ -117,6 +126,9 @@
     "signatureVerification": {
       "taskDescription": "Signature verification for document signing",
       "service": "internal_signatureVerification",
+      "variables": [
+        "userdata"
+      ],
       "serviceDescription": "Internal signature verification service for document signing.",
       "request": {
         "topic": "internal.signatureVerification.request",

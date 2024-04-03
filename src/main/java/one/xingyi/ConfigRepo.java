@@ -24,6 +24,9 @@ public class ConfigRepo {
     }
     public AndErrors<ConfigAndName> readJsonFile(String product, String country, String channel) throws IOException {
         String name = MessageFormat.format(filePattern, product, country, channel);
+        return readFromName(name);
+    }
+    public AndErrors<ConfigAndName> readFromName(String name) {
         try {
             String configString = toString(name);
             Config config = objectMapper.readValue(configString, Config.class);

@@ -22,7 +22,7 @@ public class StartController {
     @Autowired
     ObjectMapper objectMapper = new ObjectMapper();
     @PostMapping("/start")
-    public ResponseEntity<Object> startProcess(@RequestParam String country, @RequestParam String product, @RequestParam String channel, @RequestBody String payload) throws IOException {
+    public ResponseEntity<Object> startProcess(@RequestParam String country, @RequestParam String product, @RequestParam String channel, @RequestBody String userData) throws IOException {
         AndErrors<ConfigAndName> andErrors = config.readJsonFile(product, country, channel);
         if (andErrors.hasErrors())
             return ResponseEntity.badRequest().body(andErrors.errors().toString());
@@ -33,7 +33,7 @@ public class StartController {
                 "country", country,
                 "product", product,
                 "channel", channel,
-                "payload", payload,
+                "userData", userData,
                 "config", andErrors.result().name() //This should actually be the 'id' of the bpmn. But for the demo we'll use the name
         );
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(bpmn, variables);

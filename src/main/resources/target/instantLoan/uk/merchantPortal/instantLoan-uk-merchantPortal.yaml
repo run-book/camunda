@@ -27,6 +27,8 @@ tasks:
       AML check for customer                                                          # Added by: tasks.yaml
     service:
       experian_aml                                                                    # Added by: tasks.yaml
+    variables:
+      - userdata                                                                      # Added by: tasks.yaml
     serviceDescription:
       AML service provided by Experian for real-time background checks.               # Added by: services.yaml
     request:
@@ -70,6 +72,8 @@ tasks:
       equifax_creditCheck                                                             # Added by: tasks.yaml, geo/uk/uk_overrides.yaml
     taskDescription:
       Credit check for customer. In the UK we use Equifax                             # Added by: tasks.yaml, geo/uk/uk_overrides.yaml
+    variables:
+      - userdata                                                                      # Added by: tasks.yaml
     serviceDescription:
       Credit score checking service provided by Equifax.                              # Added by: services.yaml
     request:
@@ -113,6 +117,8 @@ tasks:
       Pricing service for product and service pricing adjustments                     # Added by: tasks.yaml
     service:
       internal_pricingService                                                         # Added by: tasks.yaml
+    variables:
+      - userdata                                                                      # Added by: tasks.yaml
     serviceDescription:
       Internal pricing service for product and service pricing adjustments.           # Added by: services.yaml
     request:
@@ -156,6 +162,8 @@ tasks:
       Signature verification for document signing                                     # Added by: tasks.yaml
     service:
       internal_signatureVerification                                                  # Added by: tasks.yaml
+    variables:
+      - userdata                                                                      # Added by: tasks.yaml
     serviceDescription:
       Internal signature verification service for document signing.                   # Added by: services.yaml
     request:

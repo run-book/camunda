@@ -19,6 +19,7 @@ public class ConfigController {
     @GetMapping("/config")
     public ResponseEntity<Object> config(@RequestParam String country, @RequestParam String product, @RequestParam String channel) throws IOException {
         AndErrors<ConfigAndName> andErrors = config.readJsonFile(product, country, channel);
+
         return !andErrors.errors().isEmpty() ? ResponseEntity.ok(andErrors.result().name()) : ResponseEntity.badRequest().body(andErrors.errors());
     }
 }
