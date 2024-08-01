@@ -4,19 +4,24 @@
     <bpmn:startEvent id="StartEvent" name="Request&#10;received">
       <bpmn:outgoing>SequenceFlow1</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="SequenceFlow1" sourceRef="StartEvent" targetRef="ServiceTask_Logger" />
-    <bpmn:serviceTask id="ServiceTask_Logger" name="Log to console" camunda:delegateExpression="${logger}">
+    <bpmn:sequenceFlow id="SequenceFlow1" sourceRef="StartEvent" targetRef="LogAtStart" />
+    <bpmn:serviceTask id="LogAtStart" name="Log At Start" camunda:delegateExpression="${logger}">
       <bpmn:incoming>SequenceFlow1</bpmn:incoming>
       <bpmn:outgoing>Flow_01pcqyg</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="EndEvent" name="Request&#10;processed">
-      <bpmn:incoming>Flow_18tgjao</bpmn:incoming>
+      <bpmn:incoming>Flow_1w4bda5</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_01pcqyg" sourceRef="ServiceTask_Logger" targetRef="aml" />
-    <bpmn:sequenceFlow id="Flow_18tgjao" sourceRef="aml" targetRef="EndEvent" />
+    <bpmn:sequenceFlow id="Flow_01pcqyg" sourceRef="LogAtStart" targetRef="aml" />
     <bpmn:serviceTask id="aml" name="AML" camunda:type="external" camunda:topic="AML">
       <bpmn:incoming>Flow_01pcqyg</bpmn:incoming>
-      <bpmn:outgoing>Flow_18tgjao</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0j8oon1</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0j8oon1" sourceRef="aml" targetRef="LogAtEnd" />
+    <bpmn:sequenceFlow id="Flow_1w4bda5" sourceRef="LogAtEnd" targetRef="EndEvent" />
+    <bpmn:serviceTask id="LogAtEnd" name="Log At End" camunda:delegateExpression="${logger}">
+      <bpmn:incoming>Flow_0j8oon1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1w4bda5</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -27,17 +32,21 @@
           <dc:Bounds x="171" y="138" width="41" height="24" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_16vok30_di" bpmnElement="ServiceTask_Logger">
+      <bpmndi:BPMNShape id="ServiceTask_16vok30_di" bpmnElement="LogAtStart">
         <dc:Bounds x="337" y="80" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_0fkea3f_di" bpmnElement="EndEvent">
-        <dc:Bounds x="872" y="102" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="865" y="138" width="51" height="27" />
-        </bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1yuxzwd_di" bpmnElement="aml">
         <dc:Bounds x="570" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0fkea3f_di" bpmnElement="EndEvent">
+        <dc:Bounds x="1042" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1035" y="138" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0u00flj_di" bpmnElement="LogAtEnd">
+        <dc:Bounds x="790" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_08va5r8_di" bpmnElement="SequenceFlow1">
         <di:waypoint x="209" y="120" />
@@ -50,9 +59,13 @@
         <di:waypoint x="437" y="120" />
         <di:waypoint x="570" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_18tgjao_di" bpmnElement="Flow_18tgjao">
+      <bpmndi:BPMNEdge id="Flow_0j8oon1_di" bpmnElement="Flow_0j8oon1">
         <di:waypoint x="670" y="120" />
-        <di:waypoint x="872" y="120" />
+        <di:waypoint x="790" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1w4bda5_di" bpmnElement="Flow_1w4bda5">
+        <di:waypoint x="890" y="120" />
+        <di:waypoint x="1042" y="120" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

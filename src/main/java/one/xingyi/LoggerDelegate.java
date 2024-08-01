@@ -13,21 +13,14 @@ import org.springframework.stereotype.Component;
  */
 @Component("logger")
 public class LoggerDelegate implements JavaDelegate {
- 
-  private final Logger LOGGER = Logger.getLogger(LoggerDelegate.class.getName());
-  
-  public void execute(DelegateExecution execution) throws Exception {
-    
-    LOGGER.info("\n\n  ... LoggerDelegate invoked by "
-            + "activityName='" + execution.getCurrentActivityName() + "'"
-            + ", activityId=" + execution.getCurrentActivityId()
-            + ", processDefinitionId=" + execution.getProcessDefinitionId()
-            + ", processInstanceId=" + execution.getProcessInstanceId()
-            + ", activityId=" + execution.getProcessBusinessKey()
-            + ", executionId=" + execution.getId()
-            + ", variables=" + execution.getVariables()
-            + " \n\n");
-    
-  }
-
+    private final Logger LOGGER = Logger.getLogger(LoggerDelegate.class.getName());
+    public void execute(DelegateExecution execution) throws Exception {
+        LOGGER.info(execution.getCurrentActivityName() + "'"
+                + ", activityId=" + execution.getCurrentActivityId()
+                + ", processDefinitionId=" + execution.getProcessDefinitionId()
+                + ", processInstanceId=" + execution.getProcessInstanceId()
+                + ", activityId=" + execution.getProcessBusinessKey()
+                + ", executionId=" + execution.getId()
+                + ", variables=" + execution.getVariables());
+    }
 }
